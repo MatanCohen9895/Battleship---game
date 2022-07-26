@@ -1,0 +1,124 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>JSFinalMatan%Ori</title>
+
+    <link href="StyleSheet.css" rel="stylesheet" />
+    <script src="JavaScript.js"></script>
+</head>
+
+<body>
+
+    <div style="text-align:center">
+
+        <label for="width"><b>width:</b></label>
+        <input type="text" id="width" value="15" />
+        <label for="height"><b>height:</b></label>
+        <input type="text" id="height" value="15" />
+        <br />  <br />
+
+        <button class="button" onclick="init()" ondblclick="location.reload();">START GAME</button>
+        <button class="button" onclick="cheat()">CHEAT</button>
+        <button class="button" onclick="savegame()">SAVE GAME</button>
+        <button class="button" onclick="reloadlastgame()">Reload GAME</button>
+        <div style="text-align:center">
+            <table class='center'>
+                <tr>
+                    <td style="background-color:deepskyblue"><b>My Score:</b></td>
+                    <td style="background-color:deepskyblue"><b>Computer Score:</b></td>
+                </tr>
+                <tr>
+                    <td id="score_1" style="background-color:deepskyblue"></td>
+                    <td id="score_2" style="background-color:deepskyblue"></td>
+                </tr>
+            </table>
+        </div>
+      
+     
+    
+
+        <h1>MY BOARD</h1>
+        <div id="ph"></div>
+        <h1>ENEMY BOARD</h1>
+        <div id="ph2"></div>
+    </div>
+
+
+    <script>
+
+        if (localStorage["JsubmarinesArr"] != undefined) {
+            submarinesArr = JSON.parse(localStorage["JsubmarinesArr"]);
+            submarinesArr1 = JSON.parse(localStorage["JsubmarinesArr"]);
+        }
+
+        subindexarr = [];
+        rowsarr = [];
+        rowsarr1 = [];
+        subindexarr1 = [];
+        hits = [];
+        hitsindex = 0;
+        miss = [];
+        missindex = 0;
+        let k = 0;
+        let k1 = 0;
+        let rows = parseInt(document.getElementById("width").value);
+        let cols = parseInt(document.getElementById("height").value);
+        let index = 0;
+        let index1 = rows * cols;
+
+
+        function init() {
+
+
+            if (rows > 20 || rows < 10 || cols > 20 || cols < 10) {
+                alert("width or height not between 10-20 please try again!");
+                location.reload();
+            }
+
+            str = "<table class='center'>";
+            str1 = "<table class='center'>";
+            for (var i = 0; i < rows; i++) {
+                randn = getrand();
+                randn1 = getrand();
+                index2 = index + Math.floor(Math.random() * (rows / 2));
+                index3 = index1 + Math.floor(Math.random() * (rows / 2));
+                rowsarr[i] = [index, index + rows, i];
+                rowsarr1[i] = [index1, index1 + rows, i];
+                k = buldsubarray(submarinesArr, randn, subindexarr, k, index2, rows, cols, rowsarr, i, randomwidthlengh());
+                k1 = buldsubarray(submarinesArr1, randn1, subindexarr1, k1, index3, rows, cols, rowsarr1, i, randomwidthlengh());
+                str += "<tr>";
+                str1 += "<tr>";
+                for (var j = 0; j < cols; j++) {
+
+                    str += "<td id='" + index + "'onclick = game(this.id) >";
+                    str += "</td>";
+                    str1 += "<td id='" + index1 + "'onclick = game(this.id) >";
+                    str1 += "</td>";
+
+                    index++;
+                    index1++;
+                }
+                str += "</tr>";
+                str1 += "</tr>";
+            }
+            str += "</table>";
+            str1 += "</table>";
+            document.getElementById("ph").innerHTML = str;
+            document.getElementById("ph2").innerHTML = str1;
+            updatemarine(subindexarr);
+            total1 = updatetotal(subindexarr);
+            total2 = updatetotal(subindexarr1);
+            console.log(subindexarr);
+            console.log(subindexarr1);
+
+
+        }
+
+     
+    </script>
+
+
+</body>
+
+</html>
